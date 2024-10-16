@@ -1,0 +1,215 @@
+CREATE TABLE Plano(
+  Numero CHAR(2) PRIMARY KEY NOT NULL,
+  Descricao CHAR(30),
+  Valor DECIMAL(10,2)
+);
+
+SELECT * FROM Plano;
+
+INSERT INTO Plano(Numero, Descricao, Valor)
+VALUES
+('B1', 'Básico 1', 200.00),
+('B2', 'Básico 2', 150.00),
+('B3', 'Básico 3', 100.00),
+('E1', 'Executivo 1', 350.00),
+('E2', 'Executivo 2', 300.00),
+('E3', 'Executivo 3', 250.00),
+('M1', 'Master 1', 500.00),
+('M2', 'Master 2', 450.00),
+('M3', 'Master 3', 400.00)
+
+CREATE TABLE Associado(
+  Plano CHAR(2) NOT NULL,
+  Nome CHAR(40) NOT NULL,
+  Endereco CHAR(35),
+  Cidade CHAR(20),
+  Estado CHAR(2),
+  CEP CHAR(9)
+)
+
+INSERT INTO Associado(Plano, Nome, Endereco, Cidade, Estado, CEP)
+VALUES
+('B1', 'JOSE ANTONIO DA SILVA', 'R. FELIPE DO AMARAL, 3450', 'COTIA', 'SP', '06700-000'),
+('B1', 'MARIA DA SILVA SOBRINHO', 'R. FELIPE DE JESUS, 1245', 'DIADEMA', 'SP', '09960-170'),
+('B1', 'PEDRO JOSE DE OLIVEIRA', 'R. AGRIPINO DIAS, 155', 'COTIA', 'SP', '06700-011'),
+('B2', 'ANTONIA DE FERNANDES', 'R. PE EZEQUIEL, 567', 'DIADEMA', 'SP', '09960-175'),
+('B2', 'ANTONIO DO PRADO', 'R. INDIO TABAJARA, 55', 'GUARULHOS', 'SP', '07132-999'),
+('B3', 'WILSON SENA', 'R. ARAPIRACA, 1234', 'OSASCO', 'SP', '06293-001'),
+('B3', 'SILVIA DE ABREU', 'R. DR JOAO DA SILVA, 5', 'SANTO ANDRE', 'SP', '09172-112'),
+('E1', 'ODETE DA CONCEICAO', 'R. VOLUNTARIOS DA PATRIA, 10', 'SAO PAULO', 'SP', '02010-550'),
+('E2', 'JOAO CARLOS MACEDO', 'R. VISTA ALEGRE, 500', 'SAO PAULO', 'SP', '04343-990'),
+('E3', 'CONCEICAO DA SILVA', 'AV. VITORINO DO AMPARO, 11', 'MAUA', 'SP', '09312-998'),
+('E3', 'PAULO BRUNO AMARAL', 'R. ARGENZIO BRILHANTE, 88', 'BARUERI', 'SP', '06460-999'),
+('E3', 'WALDENICE DE OLIVEIRA', 'R. OURO VELHO, 12', 'BARUERI', 'SP', '06460-998'),
+('E3', 'MARCOS DO AMARAL', 'R. DO OUVIDOR, 67', 'GUARULHOS', 'SP', '07031-555'),
+('M1', 'MURILO DE SANTANA', 'R.PRATA DA CASA', 'BARUERI', 'SP', '06455-111'),
+('M1', 'LUIZA ONOFRE FREITAS', 'R. VICENTE DE ABREU, 55', 'SANTO ANDRE', 'SP', '09060-667'),
+('M2', 'MELISSA DE ALMEIDA', 'R. FERNANDO ANTONIO, 2345', 'SAO PAULO', 'SP', '04842-987'),
+('M2', 'JOAO INACIO DA CONCEICAO', 'R. PENELOPE CHARMOSA, 34', 'SUZANO', 'SP', '08670-888'),
+('B3', 'AUGUSTA DE ABREU', 'AV. RIO DA SERRA, 909', 'SANTO ANDRE', 'SP', '09061-333'),
+('B3', 'ILDA DE MELO DA CUNHA', 'AV. POR DO SOL, 546', 'SANTO ANDRE', 'SP', '09199-444'),
+('B3', 'MARCOS DA CUNHA', 'AV. PEDROSO DE MORAES, 546', 'SAO PAULO', 'SP', '04040-444');
+
+-- exercício 2
+
+SELECT 
+Associado.Nome,
+Plano.Numero
+FROM
+Associado
+INNER JOIN Plano ON Plano.Numero = Associado.Plano
+
+-- exercício 3
+
+SELECT
+Plano,
+COUNT(Nome) AS Qtde_Associados
+FROM Associado
+WHERE Plano LIKE 'B1'
+
+-- exercício 4
+
+SELECT
+Associado.Nome AS Nome,
+Associado.Plano AS Plano,
+Plano.Valor
+FROM
+Associado
+INNER JOIN Plano ON Plano.Numero = Associado.Plano
+
+-- exercício 5
+SELECT
+Nome, Cidade
+FROM
+Associado
+WHERE Cidade LIKE 'Cotia' OR Cidade LIKE 'Diadema';
+
+-- exercício 6
+SELECT 
+Associado.Nome AS Nome, 
+Associado.Plano AS Plano, 
+Plano.Valor AS Valor
+FROM Associado
+INNER JOIN Plano ON PLano.Numero = Associado.Plano
+WHERE Cidade LIKE 'Barueri' AND Plano LIKE 'M1'
+
+-- exercício 7
+SELECT 
+Associado.Nome AS Nome, 
+Associado.Plano AS Plano, 
+Plano.Valor AS Valor
+FROM Associado
+INNER JOIN Plano ON PLano.Numero = Associado.Plano
+WHERE Cidade LIKE 'Sao Paulo'
+
+-- exercício 8
+SELECT *
+FROM Associado
+INNER JOIN Plano ON PLano.Numero = Associado.Plano
+WHERE Nome LIKE '%Silva%'
+
+-- exercício 9
+UPDATE PLano
+SET Valor = Valor*1.10
+WHERE Numero LIKE 'B%';
+UPDATE PLano
+SET Valor = Valor*1.05
+WHERE Numero LIKE 'E%';
+UPDATE PLano
+SET Valor = Valor*1.03
+WHERE Numero LIKE 'M%';
+SELECT * FROM Plano
+
+-- exercício 10
+UPDATE Associado
+SET Plano = 'E3' 
+WHERE Nome = 'PEDRO JOSE DE OLIVEIRA';
+
+SELECT * FROM associado INNER JOIN plano 
+ON associado.Plano = plano.Numero;
+
+-- exercício 11
+
+SELECT
+Plano,
+COUNT(Nome) AS Qnt_Associados
+FROM Associado
+WHERE Plano LIKE 'E3'
+
+-- exercício 12
+
+SELECT
+Associado.Plano AS Plano,
+Associado.Nome AS Nome,
+Plano.Valor AS Valor
+FROM Associado
+INNER JOIN Plano ON Plano.Numero = Associado.Plano
+WHERE Plano LIKE 'B1' OR Plano LIKE 'E1' OR Plano LIKE 'M1'
+
+-- exercício 13
+
+SELECT Nome,
+Plano AS Plano_Executivo
+FROM Associado
+WHERE Plano LIKE 'E%'
+
+-- exercício 14
+SELECT Nome,
+Plano
+FROM Associado
+WHERE Plano LIKE 'B%' OR Plano LIKE 'M%'
+
+-- exercício 15
+
+DELETE FROM Associado
+WHERE Cidade LIKE 'Santo Andre'
+SELECT * FROM Associado
+
+-- exercício 16
+
+SELECT Associado.Nome AS Nome, Associado.Plano AS Plano, Plano.Valor AS Valor FROM associado
+INNER JOIN Plano
+ON Associado.Plano = Plano.Numero
+WHERE (Associado.Cidade LIKE 'Sao Paulo' AND Plano LIKE 'M2') OR (Associado.Cidade LIKE 'Sao Paulo' AND Plano LIKE 'M3')
+ORDER BY Nome;
+
+
+-- exercício 17
+
+SELECT * 
+FROM Associado 
+INNER JOIN Plano ON Associado.Plano = Plano.Numero 
+ORDER BY Plano.Numero;
+
+-- exercício 18
+
+SELECT 
+Plano,
+Nome
+FROM
+Associado
+ORDER BY Plano ASC, Nome DESC;
+
+-- exercício 19
+
+SELECT Plano, Nome
+FROM Associado
+WHERE Plano NOT LIKE 'M%'
+ORDER BY Plano ASC
+
+-- exercício 20
+
+SELECT 
+Associado.Nome AS Nome,
+Plano.Descricao AS Descricao_Plano
+FROM Associado 
+INNER JOIN Plano ON Associado.Plano = Plano.Numero 
+ORDER BY Nome;
+
+-- exercício 21
+
+SELECT
+Numero AS Plano,
+Valor
+FROM Plano
+WHERE Valor >= 300.00 AND Valor <= 500.00

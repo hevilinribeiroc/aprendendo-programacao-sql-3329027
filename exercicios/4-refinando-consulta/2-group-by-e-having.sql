@@ -34,4 +34,4 @@ FROM
 invoices
 inner join customers on invoices.customerId = customers.customerId
 GROUP BY id_cliente
-HAVING sum(invoices.Total) >=40;
+HAVING sum(invoices.Total) >=40; 
