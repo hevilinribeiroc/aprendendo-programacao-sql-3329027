@@ -16,7 +16,7 @@ VALUES
 ('E3', 'Executivo 3', 250.00),
 ('M1', 'Master 1', 500.00),
 ('M2', 'Master 2', 450.00),
-('M3', 'Master 3', 400.00)
+('M3', 'Master 3', 400.00);
 
 CREATE TABLE Associado(
   Plano CHAR(2) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE Associado(
   Cidade CHAR(20),
   Estado CHAR(2),
   CEP CHAR(9)
-)
+);
 
 INSERT INTO Associado(Plano, Nome, Endereco, Cidade, Estado, CEP)
 VALUES
@@ -57,7 +57,7 @@ Associado.Nome,
 Plano.Numero
 FROM
 Associado
-INNER JOIN Plano ON Plano.Numero = Associado.Plano
+INNER JOIN Plano ON Plano.Numero = Associado.Plano;
 
 -- exercício 3
 
@@ -65,7 +65,7 @@ SELECT
 Plano,
 COUNT(Nome) AS Qtde_Associados
 FROM Associado
-WHERE Plano LIKE 'B1'
+WHERE Plano LIKE 'B1';
 
 -- exercício 4
 
@@ -75,9 +75,10 @@ Associado.Plano AS Plano,
 Plano.Valor
 FROM
 Associado
-INNER JOIN Plano ON Plano.Numero = Associado.Plano
+INNER JOIN Plano ON Plano.Numero = Associado.Plano;
 
 -- exercício 5
+
 SELECT
 Nome, Cidade
 FROM
@@ -85,30 +86,34 @@ Associado
 WHERE Cidade LIKE 'Cotia' OR Cidade LIKE 'Diadema';
 
 -- exercício 6
+
 SELECT 
 Associado.Nome AS Nome, 
 Associado.Plano AS Plano, 
 Plano.Valor AS Valor
 FROM Associado
 INNER JOIN Plano ON PLano.Numero = Associado.Plano
-WHERE Cidade LIKE 'Barueri' AND Plano LIKE 'M1'
+WHERE Cidade LIKE 'Barueri' AND Plano LIKE 'M1';
 
 -- exercício 7
+
 SELECT 
 Associado.Nome AS Nome, 
 Associado.Plano AS Plano, 
 Plano.Valor AS Valor
 FROM Associado
 INNER JOIN Plano ON PLano.Numero = Associado.Plano
-WHERE Cidade LIKE 'Sao Paulo'
+WHERE Cidade LIKE 'Sao Paulo';
 
 -- exercício 8
+
 SELECT *
 FROM Associado
 INNER JOIN Plano ON PLano.Numero = Associado.Plano
-WHERE Nome LIKE '%Silva%'
+WHERE Nome LIKE '%Silva%';
 
 -- exercício 9
+
 UPDATE PLano
 SET Valor = Valor*1.10
 WHERE Numero LIKE 'B%';
@@ -118,9 +123,10 @@ WHERE Numero LIKE 'E%';
 UPDATE PLano
 SET Valor = Valor*1.03
 WHERE Numero LIKE 'M%';
-SELECT * FROM Plano
+SELECT * FROM Plano;
 
 -- exercício 10
+
 UPDATE Associado
 SET Plano = 'E3' 
 WHERE Nome = 'PEDRO JOSE DE OLIVEIRA';
@@ -134,7 +140,7 @@ SELECT
 Plano,
 COUNT(Nome) AS Qnt_Associados
 FROM Associado
-WHERE Plano LIKE 'E3'
+WHERE Plano LIKE 'E3';
 
 -- exercício 12
 
@@ -144,26 +150,27 @@ Associado.Nome AS Nome,
 Plano.Valor AS Valor
 FROM Associado
 INNER JOIN Plano ON Plano.Numero = Associado.Plano
-WHERE Plano LIKE 'B1' OR Plano LIKE 'E1' OR Plano LIKE 'M1'
+WHERE Plano LIKE 'B1' OR Plano LIKE 'E1' OR Plano LIKE 'M1';
 
 -- exercício 13
 
 SELECT Nome,
 Plano AS Plano_Executivo
 FROM Associado
-WHERE Plano LIKE 'E%'
+WHERE Plano LIKE 'E%';
 
 -- exercício 14
+
 SELECT Nome,
 Plano
 FROM Associado
-WHERE Plano LIKE 'B%' OR Plano LIKE 'M%'
+WHERE Plano LIKE 'B%' OR Plano LIKE 'M%';
 
 -- exercício 15
 
 DELETE FROM Associado
 WHERE Cidade LIKE 'Santo Andre'
-SELECT * FROM Associado
+SELECT * FROM Associado;
 
 -- exercício 16
 
@@ -195,7 +202,7 @@ ORDER BY Plano ASC, Nome DESC;
 SELECT Plano, Nome
 FROM Associado
 WHERE Plano NOT LIKE 'M%'
-ORDER BY Plano ASC
+ORDER BY Plano ASC;
 
 -- exercício 20
 
@@ -212,4 +219,37 @@ SELECT
 Numero AS Plano,
 Valor
 FROM Plano
-WHERE Valor >= 300.00 AND Valor <= 500.00
+WHERE Valor >= 300.00 AND Valor <= 500.00;
+
+-- exercício 22
+
+SELECT
+Associado.Nome AS Nome,
+Plano.Numero AS Plano,
+Plano.Descricao AS Descricao,
+Plano.Valor AS Valor
+FROM 
+Associado
+INNER JOIN Plano ON Plano.Numero = Associado.Plano
+WHERE Nome LIKE '%Amaral%';
+
+-- exercício 23
+
+SELECT Nome, Cidade
+FROM Associado
+WHERE Cidade LIKE 'Diadema';
+
+-- exercício 24
+
+UPDATE Plano
+SET Valor = Valor*1.06
+WHERE Numero LIKE 'M%';
+
+SELECT * FROM Plano;
+
+-- exercício 25
+
+SELECT Nome, CEP
+FROM Associado
+WHERE CEP LIKE '09%';
+
