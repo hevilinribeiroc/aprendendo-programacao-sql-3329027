@@ -1,0 +1,207 @@
+PRAGMA foreign_keys = ON; --habilitar restricoes da fk
+
+CREATE TABLE Aluno (
+  RA VARCHAR(6) PRIMARY KEY NOT NULL,
+  Nome VARCHAR(30) NOT NULL,
+  Dta_Nasc DATE NOT NULL
+);
+
+INSERT INTO Aluno(RA, Nome, Dta_Nasc)
+VALUES
+('123456', 'Ana', '1972/01/10'),
+('123457', 'Bianca', '1973/02/11'),
+('123458', 'Carla', '1987/12/12'),
+('123459', 'Danilo', '1990/10/02'),
+('123460', 'Eliana', '1987/01/01');
+
+SELECT * FROM Aluno;
+
+CREATE TABLE Curso (
+  CODIGO INTEGER PRIMARY KEY NOT NULL,
+  Nome_Curso VARCHAR(30) NOT NULL,
+  CH INTEGER,
+  Data_Inicio DATE,
+  Data_Termino DATE
+);
+
+INSERT INTO Curso (
+  CODIGO, 
+  Nome_Curso, 
+  CH, 
+  Data_Inicio, 
+  Data_Termino
+)
+VALUES
+(1, 'Java', 360, '2007/12/01', '2008/10/10'),
+(2, 'Auto Cad', 60, '2008/01/10', '2008/05/10'),
+(3, 'PHP', 90, '2008/02/15', '2008/07/10'),
+(4, 'Redes', 60, '2008/01/20', '2008/03/20');
+
+SELECT * FROM Curso;
+
+CREATE TABLE Matricula(
+  Curso INTEGER NOT NULL,
+  RA VARCHAR(6) NOT NULL,
+  Data_Matricula DATE,
+  Valor DECIMAL (5,2),
+  FOREIGN KEY (Curso) REFERENCES Curso(CODIGO),
+  FOREIGN KEY (RA) REFERENCES Aluno(RA)
+);
+
+INSERT INTO matricula(curso, ra, data_matricula, valor)
+VALUES
+('1', '123456', '2007/09/10', 100),
+('3', '123456', '2007/10/01', 60),
+('1', '123457', '2007/09/01', 100),
+('2', '123458', '2008/01/11', 50),
+('2', '123459', '2007/07/20', 50),
+('1', '123460', '2007/08/10', 80);
+
+SELECT * FROM Matricula
+
+-- EXERCICIO 1
+
+SELECT
+Aluno.Nome AS Nome,
+Aluno.RA AS RA,
+Curso.Nome_Curso AS Curso
+FROM 
+Aluno 
+INNER JOIN Matricula ON Matricula.RA = Aluno.RA
+INNER JOIN Curso ON Curso.CODIGO = Matricula.Curso
+
+-- EXERCICIO 2
+
+SELECT
+Aluno.Nome AS Nome,
+Aluno.RA AS RA,
+Curso.Nome_Curso AS Curso
+FROM 
+Aluno 
+INNER JOIN Matricula ON Matricula.RA = Aluno.RA
+INNER JOIN Curso ON Curso.CODIGO = Matricula.Curso
+ORDER BY Curso
+
+-- EXERCICIO 3
+
+SELECT 
+Curso.Nome_Curso AS Curso,
+COUNT (Matricula.RA) AS QNTDE
+FROM 
+Matricula 
+INNER JOIN Curso ON Curso.CODIGO = Matricula.Curso
+GROUP BY Curso.Nome_Curso;
+
+-- EXERCICIO 4
+
+SELECT 
+Curso.Nome_Curso AS Curso,
+COUNT (Matricula.RA) AS QNTDE
+FROM 
+Matricula 
+RIGHT JOIN Curso ON Curso.CODIGO = Matricula.Curso
+GROUP BY Curso.Nome_Curso;
+
+-- EXERCICIO 5
+
+SELECT 
+Curso.Nome_Curso AS Curso,
+ROUND(IFNULL(SUM(Matricula.Valor),0),2) AS TotalPagoPorCurso
+FROM 
+Matricula 
+RIGHT JOIN Curso ON Curso.CODIGO = Matricula.Curso
+GROUP BY Curso.Nome_Curso;
+
+-- EXERCICIO 6
+
+SELECT 
+    Curso.Nome_Curso AS Curso,
+    ROUND(IFNULL(SUM(Matricula.Valor),0),2) AS TotalPagoPorCurso
+FROM 
+    Matricula 
+RIGHT JOIN Curso ON Curso.CODIGO = Matricula.Curso
+GROUP BY Curso.Nome_Curso
+UNION ALL
+SELECT 
+    'Total Geral' AS Curso,
+    ROUND(IFNULL(SUM(Matricula.Valor),0),2) AS TotalGeral
+FROM 
+    Matricula;
+
+-- EXERCICIO 7
+
+SELECT 
+CONCAT('R$ ', ROUND(AVG(Valor),2)) AS Media 
+FROM Matricula;
+
+-- EXERCICIO 8
+
+SELECT 
+Curso.Nome_Curso AS Curso,
+ROUND(IFNULL(AVG(Matricula.Valor),0),2) AS 'Media Valor Pago Por Curso'
+FROM 
+Matricula 
+RIGHT JOIN Curso ON Curso.CODIGO = Matricula.Curso
+GROUP BY Curso.Nome_Curso;
+
+-- EXERCICIO 9
+
+SELECT 
+Curso.Nome_Curso AS Curso,
+COUNT (Matricula.RA) AS QNTDE
+FROM 
+Matricula 
+RIGHT JOIN Curso ON Curso.CODIGO = Matricula.Curso
+GROUP BY Curso.Nome_Curso
+HAVING  QNTDE >= 2;
+
+-- EXERCICIO 10
+
+SELECT
+Nome_Curso
+FROM Curso
+WHERE CH = (
+  SELECT CH FROM Curso
+  WHERE Nome_Curso = 'Auto Cad') 
+AND Nome_Curso <> 'Auto Cad'
+
+-- EXERCICIO 11
+
+SELECT 
+    Nome
+FROM 
+    Aluno
+WHERE substr(Dta_Nasc, 6, 2) = (
+  SELECT substr(Dta_Nasc, 6, 2) 
+  FROM Aluno
+  WHERE Nome = 'Ana'
+  )
+AND Nome <> 'Ana';
+
+-- EXERCICIO 12
+
+SELECT
+Curso.Nome_Curso AS Curso,
+Curso.Data_Inicio
+FROM 
+Aluno 
+INNER JOIN Matricula ON Matricula.RA = Aluno.RA
+INNER JOIN Curso ON Curso.CODIGO = Matricula.Curso
+GROUP BY Curso
+WHERE substr(Curso.Data_Inicio, 6, 2) = 01
+
+
+SELECT curso.nome as curso, 
+DATE_FORMAT(curso.inicio, '%m/%Y') AS inicio,
+COUNT(matricula.curso) AS qtde_matricula 
+FROM curso
+RIGHT JOIN matricula
+ON curso.codigo = matricula.curso
+WHERE DATE_FORMAT(curso.inicio, '%m/%Y') = '01/2008'
+GROUP BY curso.nome; 
+
+
+
+
+
+
