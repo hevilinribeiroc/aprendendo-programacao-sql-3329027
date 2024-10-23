@@ -252,4 +252,3 @@ SELECT * FROM Plano;
 SELECT Nome, CEP
 FROM Associado
 WHERE CEP LIKE '09%';
-
