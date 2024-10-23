@@ -182,24 +182,84 @@ AND Nome <> 'Ana';
 
 SELECT
 Curso.Nome_Curso AS Curso,
-Curso.Data_Inicio
+Curso.Data_Inicio AS Data_Inicio
 FROM 
 Aluno 
 INNER JOIN Matricula ON Matricula.RA = Aluno.RA
 INNER JOIN Curso ON Curso.CODIGO = Matricula.Curso
+WHERE substr(Data_Inicio, 6, 2) = '01' and substr(Data_Inicio, 1, 4) = '2008'
 GROUP BY Curso
-WHERE substr(Curso.Data_Inicio, 6, 2) = 01
 
+-- EXERCICIO 13
 
-SELECT curso.nome as curso, 
-DATE_FORMAT(curso.inicio, '%m/%Y') AS inicio,
-COUNT(matricula.curso) AS qtde_matricula 
+SELECT
+Nome_Curso AS Curso,
+Data_Inicio
+FROM 
+Curso 
+WHERE substr(Data_Inicio, 6, 2) = '01' and substr(Data_Inicio, 1, 4) = '2008'
+GROUP BY Curso
+
+-- EXERCICIO 14
+
+SELECT 
+Aluno.Nome AS Aluno,
+Curso.Nome_Curso AS Curso
+FROM
+Aluno
+INNER JOIN Matricula ON Matricula.RA = Aluno.RA
+INNER JOIN Curso ON Curso.CODIGO = Matricula.Curso
+WHERE Data_Matricula < Data_Inicio
+
+-- EXERCICIO 15
+
+SELECT Nome_Curso AS Curso, 
+Data_Inicio 
+FROM Curso
+WHERE Data_Inicio > date('now')
+GROUP BY curso;
+
+-- EXERCICIO 16
+
+SELECT 
+    Aluno.Nome AS Aluno,
+    CASE strftime('%w', replace(matricula.data_matricula, '/', '-'))
+        WHEN '0' THEN 'Domingo'
+        WHEN '1' THEN 'Segunda-feira'
+        WHEN '2' THEN 'Terça-feira'
+        WHEN '3' THEN 'Quarta-feira'
+        WHEN '4' THEN 'Quinta-feira'
+        WHEN '5' THEN 'Sexta-feira'
+        WHEN '6' THEN 'Sábado'
+    END AS Dia_Semana
+FROM Aluno
+INNER JOIN Matricula ON Matricula.RA = Aluno.ra
+WHERE strftime('%w', replace(matricula.data_matricula, '/', '-')) = '6'
+
+-- EXERCICIO 17
+
+SELECT 
+    Aluno.Nome AS Aluno,
+    0.5*Matricula.Valor AS Restituicao
+FROM Aluno
+INNER JOIN Matricula ON Matricula.RA = Aluno.ra
+WHERE strftime('%w', replace(matricula.data_matricula, '/', '-')) = '6'
+
+-- EXERCICIO 18
+
+SELECT
+Nome,
+date('now') - Dta_Nasc AS Idade
+FROM Aluno
+
+-- EXERCICIO 19
+
+SELECT 
+    curso.Nome_Curso, 
+    ((strftime('%Y', replace(curso.Data_Termino, '/', '-')) - strftime('%Y', replace(curso.Data_Inicio, '/', '-'))) * 12) + 
+    (strftime('%m', replace(curso.Data_Termino, '/', '-')) - strftime('%m', replace(curso.Data_Inicio, '/', '-'))) AS duracao_curso
 FROM curso
-RIGHT JOIN matricula
-ON curso.codigo = matricula.curso
-WHERE DATE_FORMAT(curso.inicio, '%m/%Y') = '01/2008'
-GROUP BY curso.nome; 
-
+GROUP BY curso.Nome_Curso;
 
 
 
