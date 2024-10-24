@@ -30,3 +30,147 @@ VALUES
 ('LER E SABER', 888132, 2500.00, '2017-03-05', 'ITAU')
 
 SELECT * FROM Duplicata
+
+-- Exercício 1
+
+SELECT Nome, Vencimento, Valor
+FROM Duplicata
+
+-- Exercício 2
+
+SELECT Banco, Numero
+FROM Duplicata
+WHERE Banco = 'ITAU'
+
+-- Exercício 3
+
+SELECT 
+COUNT(Numero) AS Qtde_Duplicatas_Itau
+FROM Duplicata
+WHERE Banco = 'ITAU'
+
+-- Exercício 4
+
+SELECT Numero, Vencimento, Valor, Nome
+FROM Duplicata
+WHERE substr(Vencimento, 1, 4)= '2017'
+
+-- Exercício 5
+
+SELECT Banco, Numero, Vencimento, Valor, Nome
+FROM Duplicata
+WHERE Banco NOT LIKE 'ITAU' AND Banco NOT LIKE 'SANTANDER'
+
+-- Exercício 6
+
+SELECT 
+  Numero, Valor, Nome, Vencimento, Banco
+FROM duplicata
+WHERE Nome = 'PAPELARIA SILVA'
+UNION ALL
+SELECT 
+  'Total' AS Numero, 
+  SUM(Valor), 
+  ' ' AS Nome,
+  ' ' AS Vencimento,
+  ' ' AS Banco
+FROM duplicata
+WHERE Nome = 'PAPELARIA SILVA';
+
+-- Exercício 7
+
+DELETE FROM Duplicata
+WHERE Numero = 770710 AND Nome = 'LIVRARIA FERNANDES'
+
+-- Exercício 8
+
+SELECT * FROM Duplicata
+ORDER BY Nome
+
+-- Exercício 9
+
+SELECT 
+  Nome, Valor,  Vencimento, Banco
+FROM duplicata
+ORDER BY Vencimento
+
+-- Exercício 10
+
+UPDATE Duplicata
+SET Banco = 'SANTANDER'
+WHERE Banco = 'BANCO DO BRASIL'
+
+SELECT * FROM Duplicata
+
+-- Exercício 11
+
+SELECT Nome, Banco
+FROM Duplicata
+WHERE Banco = 'BRADESCO'
+
+-- Exercício 12
+
+SELECT Valor, Vencimento
+FROM Duplicata
+WHERE 
+  Vencimento >= '2016-01-01' AND Vencimento <= '2016-12-31';
+
+-- Exercício 13
+
+SELECT 
+  IFNULL(SUM(Valor),0) AS Receber_Agosto_2016
+FROM Duplicata
+WHERE 
+  Vencimento >= '2016-08-01' AND Vencimento <= '2016-08-30'
+
+-- Exercício 15
+
+UPDATE Duplicata
+SET Valor = Valor*1.15
+WHERE 
+  Vencimento >= '2016-01-01' 
+  AND Vencimento <= '2016-12-31'
+  AND Vencimento < date('now')
+
+SELECT * FROM Duplicata
+
+-- Exercício 16
+
+UPDATE Duplicata
+SET Valor = Valor*1.05
+WHERE 
+  Vencimento >= '2017-01-01' 
+  AND Vencimento <= '2017-05-31'
+  AND Vencimento < date('now')
+  AND Nome = 'LER E SABER'
+
+SELECT * FROM Duplicata
+
+-- Exercício 17
+
+SELECT AVG(Valor) AS Media2016
+FROM Duplicata
+WHERE
+  Vencimento >= '2016-01-01' 
+  AND Vencimento <= '2016-12-31'
+
+
+-- Exercício 18
+
+SELECT Numero, Nome, Valor
+FROM Duplicata
+WHERE Valor > 10000
+
+-- Exercício 19
+
+SELECT SUM(Valor) AS A_Receber, 
+Banco
+FROM Duplicata
+WHERE Banco = 'SANTANDER'
+
+-- Exercício 20
+
+SELECT Nome, Banco
+FROM Duplicata
+WHERE Banco = 'BRADESCO'
+OR Banco = 'ITAU'
