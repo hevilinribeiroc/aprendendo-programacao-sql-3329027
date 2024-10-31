@@ -143,54 +143,127 @@ FROM VENDAS
 WHERE QUANTIDADE >= 3
 GROUP BY ID_NF
 
--- EXERCICIO 2
+-- OUTRA LISTA 
 
-CREATE TABLE 
-Alunos (
-  MAT VARCHAR(20) NOT NULL, 
-  nome VARCHAR(30) NOT NULL, 
-  endereço VARCHAR(20), 
-  cidade VARCHAR(20) 
+CREATE TABLE Pais(
+  Nome varchar(35), 
+  Continente varchar(35), 
+  Pop real, 
+  PIB real, 
+  Expec_vida real
+);
+
+CREATE TABLE Cidade(
+  Nome varchar(35), 
+  Pais varchar(35), 
+  Pop real, 
+  Capital varchar(1)
+);
+
+CREATE TABLE Rio(
+  Nome varchar(35), 
+  Origem varchar(35), 
+  Comprimento integer
 )
 
-CREATE TABLE
-Disciplinas (
-  COD_DISC VARCHAR(10) NOT NULL, 
-  nome_disc VARCHAR(20)NOT NULL, 
-  carga_hor INT NOT NULL
+INSERT INTO Pais(
+  Nome, Continente, Pop, PIB, Expec_vida
 )
-CREATE TABLE
-Professores (
-  COD_PROF VARCHAR(10), 
-  nome VARCHAR(30), 
-  endereço VARCHAR(20), 
-  cidade VARCHAR(20)
+VALUES
+('Canada', 'Am. Norte', 30.1, 658, 77.08),
+('Mexico', 'Am. Norte', 107.5, 694, 69.1),
+('Brasil', 'Am. Sul', 183.3, 10004, 65.2),
+('USA', 'Am. Norte', 270.0, 8003, 75.5)
+
+INSERT INTO Cidade(
+  Nome, Pais, Pop, Capital
 )
+VALUES
+('Washington', 'USA', 3.3, 'S'),
+('Monterrey', 'Mexico', 2.0, 'N'),
+('Brasilia', 'Brasil', 1.5, 'S'),
+('São Paulo', 'Brasil', 15.0, 'N'),
+('Ottawa', 'Canada', 0.8, 'S'),
+('Cid. Mexico', 'Mexico', 14.1, 'S')
 
-CREATE TABLE
-Turma (
-  COD_DISC VARCHAR(10), 
-  COD_TURMA VARCHAR(10), 
-  COD_PROF VARCHAR(10), 
-  ANO DATE, 
-  horário VARCHAR (15),
-  FOREIGN KEY (COD_DISC) REFERENCES Disciplinas(COD_DISC),
-  FOREIGN KEY (COD_PROF) REFERENCES Professores(COD_PROF)
+
+INSERT INTO Rio(
+  Nome, Origem, Comprimento
 )
+VALUES
+('St. Lawrence', 'USA', 3.3),
+('Grande', 'USA', 2.0),
+('Parana', 'Brasil', 1.5),
+('Mississipi', 'USA', 15.0)
 
-CREATE TABLE Histórico (
-  MAT , 
-  COD_DISC, 
-  COD_TURMA, 
-  COD_PROF, 
-  ANO, 
-  frequência, 
-  nota
+-- EXERCÍCIO 1
+
+SELECT Nome, Pais 
+FROM Cidade
+
+-- EXERCÍCIO 2
+
+SELECT Nome
+FROM Cidade
+WHERE Capital LIKE 'S'
+
+-- EXERCÍCIO 3
+
+SELECT * FROM Pais
+WHERE Expec_vida < 70
+
+-- EXERCÍCIO 4
+
+SELECT
+Cidade.Nome AS Capital,
+Pais.Pop AS Populacao
+FROM Pais
+INNER JOIN Cidade ON Cidade.Pais = Pais.Nome
+WHERE Pais.PIB > 1000 AND Cidade.Capital LIKE 'S'
+
+-- EXERCICIO 5 
+
+SELECT Cidade.Nome,
+Cidade.Pop
+FROM Cidade
+INNER JOIN Rio ON Rio.Origem = Cidade.Pais
+WHERE Pais = 
+  (SELECT Origem FROM Rio WHERE Nome = 'St. Lawrence') 
+  AND Capital = 'S'
+GROUP BY Cidade.Nome
+
+-- EXERCICIO 6
+
+SELECT 
+AVG(Pop) AS MediaPopulacao
+FROM Cidade
+WHERE Capital LIKE 'N'
+
+-- EXERCICIO 7
+
+SELECT
+Continente,
+ROUND(AVG(PIB),2) as MediaPIB
+FROM Pais
+GROUP BY Continente
+
+-- EXERCICIO 8
+
+SELECT 
+Origem,
+ROUND(MIN(Comprimento),2) AS MenorComprimento
+FROM Rio
+GROUP BY Origem
+
+-- EXERCICIO 9
+
+SELECT 
+Nome, PIB
+FROM Pais
+WHERE PIB > (
+  SELECT PIB
+  FROM Pais
+  WHERE Nome LIKE 'Canada'
 )
- MAT referencia Alunos
- COD_DISC, COD_TURMA, COD_PROF, ANO referencia Turma
-
-
-
 
 
